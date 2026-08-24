@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src https://falkotreptau.com; object-src 'none'; base-uri 'self'; form-action 'none'" />
   <meta name="theme-color" content="#0a0a0a" />
   <meta name="description" content="12 Fragen zeigen dir, wie stark Wissen, Entscheidungen und Ausführung in deinem Unternehmen noch an dir hängen." />
   <link rel="canonical" href="https://aiwondeai.github.io/ohne-dich-check/" />
@@ -124,7 +124,7 @@
     <div id="result-view" hidden>
       <section class="result-intro" data-od-id="result-summary">
         <div class="result-shell">
-          <p class="kicker">DEIN OPERATIVER BEFUND</p>
+          <p class="kicker">DEIN SCORING PASS</p>
           <div class="score-lockup" id="score-lockup" aria-label="Unabhängigkeits-Score">
             <span class="score-value" id="score-value">0</span>
             <span class="score-unit">/100</span>
@@ -132,56 +132,108 @@
           <p class="score-label">UNABHÄNGIGKEITS-SCORE</p>
           <h1 id="tier-title" tabindex="-1">Du bist das Betriebssystem.</h1>
           <p class="result-lead" id="tier-description"></p>
-          <div class="result-actions">
-            <button class="button button-ghost" id="share-button" type="button">Ergebnis teilen</button>
-            <button class="button button-ghost" id="print-button" type="button">Report drucken</button>
+          <div class="score-bottleneck">
+            <span>GRÖSSTER ENGPASS</span>
+            <strong id="score-bottleneck-name">Entscheidungen</strong>
           </div>
-          <p class="share-feedback" id="share-feedback" aria-live="polite"></p>
+          <a class="button button-primary result-detail-cta" href="#report-gate">DETAIL-REPORT ÖFFNEN <span aria-hidden="true">↓</span></a>
+          <p class="scoring-pass-note">Dein Score und erster Engpass sind sofort sichtbar. Der ausführliche Report erklärt Ursachen, alle sechs Bereiche und deinen konkreten Start-Workflow.</p>
         </div>
       </section>
 
-      <section class="bottleneck-section" data-od-id="bottleneck">
-        <div class="section-shell bottleneck-layout">
-          <div class="bottleneck-copy">
-            <p class="kicker">DEIN GRÖSSTER ENGPASS</p>
-            <h2 id="bottleneck-name">Entscheidungen</h2>
-            <p id="bottleneck-diagnosis"></p>
+      <section class="report-gate-section" id="report-gate" data-od-id="report-gate">
+        <div class="section-shell report-gate-layout">
+          <div class="report-gate-copy">
+            <p class="kicker">DEIN DETAIL-REPORT</p>
+            <h2>EINE ZAHL ZEIGT DIE LAGE.<br />DER REPORT ZEIGT DEN HEBEL.</h2>
+            <p>Du bekommst die Einordnung aller sechs Bereiche, deinen größten und nächsten Engpass, einen passenden Workflow und drei konkrete Schritte für die nächsten 14 Tage.</p>
+            <dl class="report-includes">
+              <div><dt>01</dt><dd>SECHS BEREICHE MIT KLARTEXT-EINORDNUNG</dd></div>
+              <div><dt>02</dt><dd>PRIORISIERTER WORKFLOW STATT TOOL-LISTE</dd></div>
+              <div><dt>03</dt><dd>DAUERHAFTE ZUSTELLUNG PER E-MAIL</dd></div>
+            </dl>
           </div>
-          <div class="workflow-panel">
-            <span class="panel-tag">HIER ANFANGEN</span>
-            <h3 id="workflow-title"></h3>
-            <p id="workflow-description"></p>
-            <ol id="action-list"></ol>
+
+          <div class="report-form-panel">
+            <form id="report-form" novalidate>
+              <div class="form-field">
+                <label for="report-name">Vorname</label>
+                <input id="report-name" name="name" type="text" autocomplete="given-name" maxlength="80" required />
+              </div>
+              <div class="form-field">
+                <label for="report-email">E-Mail</label>
+                <input id="report-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required />
+              </div>
+              <div class="form-honeypot" aria-hidden="true">
+                <label for="report-website">Website</label>
+                <input id="report-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+              </div>
+              <button class="button button-primary report-submit" type="submit">DETAIL-REPORT ANFORDERN <span aria-hidden="true">→</span></button>
+              <p class="report-purpose"><strong>Warum diese zwei Angaben?</strong> Dein Vorname macht den Report persönlich lesbar. Deine E-Mail brauche ich, um ihn dir dauerhaft zuzustellen und hier nach erfolgreichem Versand freizuschalten. <strong>Kein Newsletter. Keine versteckte Werbeeinwilligung.</strong></p>
+              <p class="report-legal">Mit dem Absenden forderst du ausschließlich diesen Report an. <a href="https://www.aiwon.de/datenschutz.html">Datenschutz</a></p>
+              <p class="report-status" id="report-status" role="status" aria-live="polite"></p>
+            </form>
+            <div class="report-success" id="report-success" hidden>
+              <span class="success-mark" aria-hidden="true">✓</span>
+              <p class="panel-tag">REPORT FREIGESCHALTET</p>
+              <h3 id="report-success-title">Dein Report ist unterwegs.</h3>
+              <p>Die E-Mail ist versendet. Der vollständige Befund steht jetzt direkt darunter und kann als PDF gespeichert werden.</p>
+              <a class="text-link" href="#bottleneck">ZUM DETAIL-REPORT <span aria-hidden="true">↓</span></a>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="area-section" data-od-id="area-scores">
-        <div class="section-shell area-layout">
-          <div class="area-heading">
-            <p class="kicker">DIE SECHS BEREICHE</p>
-            <h2>WO ES TRÄGT.<br />WO DU NOCH TRÄGST.</h2>
-            <p>Der schwächste Wert ist kein Urteil. Er ist dein sinnvollster Startpunkt.</p>
+      <div id="report-detail" data-report-detail hidden>
+        <section class="bottleneck-section" id="bottleneck" data-od-id="bottleneck">
+          <div class="section-shell bottleneck-layout">
+            <div class="bottleneck-copy">
+              <p class="kicker">DEIN GRÖSSTER ENGPASS</p>
+              <h2 id="bottleneck-name" tabindex="-1">Entscheidungen</h2>
+              <p id="bottleneck-diagnosis"></p>
+              <div class="next-bottleneck">
+                <span>DANACH BEOBACHTEN</span>
+                <strong id="second-bottleneck-name">Operative Ausführung</strong>
+                <p>Dieser Bereich ist dein nächster sinnvoller Prüfpunkt, sobald der erste Workflow stabil läuft.</p>
+              </div>
+            </div>
+            <div class="workflow-panel">
+              <span class="panel-tag">DEIN 14-TAGE-START</span>
+              <h3 id="workflow-title"></h3>
+              <p id="workflow-description"></p>
+              <ol id="action-list"></ol>
+            </div>
           </div>
-          <div class="area-scores" id="area-scores"></div>
-        </div>
-      </section>
+        </section>
 
-      <section class="contact-section" data-od-id="contact">
-        <div class="contact-inner">
-          <div class="contact-portrait" aria-hidden="true">
-            <img src="./assets/falko-portrait.webp" alt="" width="1200" height="1200" />
+        <section class="area-section" data-od-id="area-scores">
+          <div class="section-shell area-layout">
+            <div class="area-heading">
+              <p class="kicker">DIE SECHS BEREICHE</p>
+              <h2>WO ES TRÄGT.<br />WO DU NOCH TRÄGST.</h2>
+              <p>Jeder Wert bekommt eine konkrete Einordnung. Der schwächste Bereich ist kein Urteil, sondern dein sinnvollster Startpunkt.</p>
+            </div>
+            <div class="area-scores" id="area-scores"></div>
           </div>
-          <p class="kicker">NÄCHSTER SCHRITT</p>
-          <h2>AUS DEM ENGPASS<br />EIN SYSTEM MACHEN.</h2>
-          <p>Schick mir dein Ergebnis. Wir schauen auf den klarsten ersten Hebel – ohne AI-Transformations-Theater.</p>
-          <div class="contact-actions">
-            <a class="button button-primary" id="contact-link" href="mailto:info@aiwon.de">ERGEBNIS AN FALKO <span aria-hidden="true">→</span></a>
-            <button class="button button-ghost" id="restart-button" type="button">Check neu starten</button>
+        </section>
+
+        <section class="contact-section" data-od-id="contact">
+          <div class="contact-inner">
+            <div class="contact-portrait" aria-hidden="true">
+              <img src="./assets/falko-portrait.webp" alt="" width="1200" height="1200" />
+            </div>
+            <p class="kicker">NÄCHSTER SCHRITT</p>
+            <h2>AUS DEM ENGPASS<br />EIN SYSTEM MACHEN.</h2>
+            <p>Wenn du den ersten Hebel nicht allein bauen willst, schauen wir gemeinsam auf Prozess, Verantwortlichkeit und den kleinsten sinnvollen Workflow – ohne AI-Transformations-Theater.</p>
+            <div class="contact-actions">
+              <a class="button button-primary" id="contact-link" href="https://falkotreptau.com/#contact">TERMIN ANFRAGEN <span aria-hidden="true">→</span></a>
+              <button class="button button-ghost" id="print-button" type="button">Report speichern</button>
+              <button class="button button-ghost" id="restart-button" type="button">Check neu starten</button>
+            </div>
+            <p class="disclaimer">Operative Heuristik, kein wissenschaftlich validiertes Assessment. Deine Antworten bleiben lokal im Browser. Vorname, E-Mail und der PII-freie Ergebniscode werden nur übertragen, wenn du den Detail-Report anforderst. Kein Newsletter ohne separate Einwilligung.</p>
           </div>
-          <p class="disclaimer">Operative Heuristik, kein wissenschaftlich validiertes Assessment. Antworten werden ausschließlich lokal gespeichert. Der teilbare Ergebniscode enthält nur zwölf Punktwerte und keine eingegebenen personenbezogenen Daten.</p>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   </main>
 

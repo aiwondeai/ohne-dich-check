@@ -23,6 +23,20 @@ assert(questions.length === 12, "Expected exactly twelve questions.");
 assert(questions.every((question) => question.options.length === 4), "Every question needs four options.");
 assert(!/\[REPLACE\]|lorem ipsum|feature one/i.test(`${html}\n${css}\n${app}`), "Placeholder copy remains.");
 assert(!/scrollIntoView\s*\(/.test(app), "scrollIntoView is not allowed.");
+assert(!/share-button|Ergebnis teilen|navigator\.share|clipboard\.writeText/i.test(`${html}\n${app}`), "Share functionality must be removed.");
+assert(/id="report-form"/.test(html), "Detail-report form is missing.");
+assert(/name="name"/.test(html) && /name="email"/.test(html), "Report gate needs name and email.");
+assert(!/name="(?:phone|company|firma|telefon)"/i.test(html), "Report gate must not ask for phone or company.");
+assert(/Kein Newsletter/i.test(html), "Transactional purpose must be explained at the form.");
+assert(/https:\/\/falkotreptau\.com\/api\/ohne-dich-report/.test(app), "Resend-backed report endpoint is missing.");
+assert(/Report speichern/.test(html), "Print action must be labelled Report speichern.");
+assert(/https:\/\/falkotreptau\.com\/#contact/.test(html) && /Termin anfragen/i.test(html), "Temporary contact CTA is missing.");
+assert(/connect-src[^;]*https:\/\/falkotreptau\.com/.test(html), "CSP must allow the report API.");
+assert(/payload\.delivery !== "sent"/.test(app), "Report must unlock only after confirmed email delivery.");
+assert(/REPORT_UNLOCK_PREFIX/.test(app) && /localStorage\.setItem\(reportUnlockKey\(code\), "1"\)/.test(app), "Report unlock must store only a boolean per result code.");
+assert(!/localStorage\.setItem\([^;]*(?:email|name)/i.test(app), "PII must not be written to localStorage.");
+assert(/\.hero-title\s*\{[\s\S]*?(?:row-)?gap:\s*clamp\(/.test(css), "Hero title needs an explicit responsive line gap.");
+assert(/\.question-number\s*\{[\s\S]*?transform:\s*translateX\(-48px\)/.test(css), "Desktop question numbers must move 48px left.");
 assert(!/score-(?:dial|angle)/.test(`${html}\n${css}\n${app}`), "Stale score-gauge implementation remains.");
 assert(!/#141414|#f5f3ee/i.test(`${css}\n${favicon}`), "Brand palette must use #0a0a0a, white, and transparent-white surfaces.");
 assert(!/fonts\.(googleapis|gstatic)\.com/.test(`${html}\n${css}`), "Fonts must be self-hosted.");
@@ -56,6 +70,7 @@ assert(/aria-live="polite"/.test(html), "Result feedback needs an aria-live regi
 const printStyles = css.slice(css.indexOf("@media print"));
 assert(printStyles.includes("--muted: rgba(0, 0, 0"), "Print colors must switch to dark text on white.");
 assert(printStyles.includes(".skip-link"), "Skip link must be hidden in print.");
+assert(printStyles.includes(".report-gate-section"), "Report gate must be hidden in print.");
 
 if (failures.length) {
   console.error(failures.map((failure) => `- ${failure}`).join("\n"));

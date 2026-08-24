@@ -20,14 +20,16 @@ Dann `http://localhost:4173` öffnen.
 npm run check
 ```
 
-Der Check läuft ohne Build-Step und ohne Runtime-Dependencies. `quiz-data.js` enthält Fragen, Score-Modell, Diagnosen und Result-Code. Die Browser-App liegt in `app.js`.
+Der Check läuft ohne Build-Step und ohne Frontend-Runtime-Dependencies. `quiz-data.js` enthält Fragen, Score-Modell, Diagnosen und Result-Code. Die Browser-App liegt in `app.js`. Der optionale Detailreport nutzt den bestehenden Personal-Brand-Tracker als serverseitige Resend-Schnittstelle.
 
 ## Datenschutz
 
 - Antworten bleiben im Browser (`localStorage`).
-- Geteilte Ergebnislinks enthalten nur zwölf Punktwerte von 0–3.
+- Ergebnislinks enthalten nur zwölf Punktwerte von 0–3 und keine PII.
 - Die Website setzt keine Analytics- oder Marketing-Cookies.
-- Das MVP hat bewusst kein E-Mail-Gate und kein Backend.
+- Score, Reifestufe und größter Engpass erscheinen sofort und anonym.
+- Nur beim freiwilligen Detailreport werden Vorname, E-Mail und der PII-freie Resultcode an `https://falkotreptau.com/api/ohne-dich-report` gesendet. Der Report wird transaktional per Resend zugestellt und als Kontakt-Lead mit Quelle `ohne-dich-check` gespeichert.
+- Die Report-Anforderung ist keine Newsletter-Einwilligung. Telefon und Firma werden nicht abgefragt.
 
 ## Scoring
 
@@ -35,7 +37,7 @@ Zwei Fragen je Bereich, jeweils 0–3 Punkte. Maximum: 36 Rohpunkte, für die Da
 
 ## Deployment
 
-GitHub Pages veröffentlicht direkt aus `main` und dem Repository-Root.
+GitHub Pages veröffentlicht das Frontend direkt aus `main` und dem Repository-Root. Der Report-Endpoint wird aus dem privaten Repo `aiwondeai/falkotreptau-tracker` auf `falkotreptau.com` betrieben.
 
 ## Assets und Lizenzen
 

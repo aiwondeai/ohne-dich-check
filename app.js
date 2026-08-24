@@ -6,6 +6,8 @@ import {
 } from "./quiz-data.js";
 
 const STORAGE_KEY = "ohne-dich-check:v1";
+const REPORT_UNLOCK_PREFIX = "ohne-dich-check:report:v1:";
+const REPORT_API_URL = "https://falkotreptau.com/api/ohne-dich-report";
 const answerKeys = ["1", "2", "3", "4"];
 
 const elements = {
@@ -27,25 +29,33 @@ const elements = {
   announcer: document.querySelector("#question-announcer"),
   scoreLockup: document.querySelector("#score-lockup"),
   scoreValue: document.querySelector("#score-value"),
+  scoreBottleneckName: document.querySelector("#score-bottleneck-name"),
   tierTitle: document.querySelector("#tier-title"),
   tierDescription: document.querySelector("#tier-description"),
   bottleneckName: document.querySelector("#bottleneck-name"),
   bottleneckDiagnosis: document.querySelector("#bottleneck-diagnosis"),
+  secondBottleneckName: document.querySelector("#second-bottleneck-name"),
   workflowTitle: document.querySelector("#workflow-title"),
   workflowDescription: document.querySelector("#workflow-description"),
   actionList: document.querySelector("#action-list"),
   areaScores: document.querySelector("#area-scores"),
-  share: document.querySelector("#share-button"),
+  reportForm: document.querySelector("#report-form"),
+  reportName: document.querySelector("#report-name"),
+  reportEmail: document.querySelector("#report-email"),
+  reportWebsite: document.querySelector("#report-website"),
+  reportStatus: document.querySelector("#report-status"),
+  reportSuccess: document.querySelector("#report-success"),
+  reportSuccessTitle: document.querySelector("#report-success-title"),
+  reportDetail: document.querySelector("#report-detail"),
   print: document.querySelector("#print-button"),
   restart: document.querySelector("#restart-button"),
-  contact: document.querySelector("#contact-link"),
-  feedback: document.querySelector("#share-feedback"),
 };
 
 let state = {
   answers: Array(questions.length).fill(null),
   current: 0,
   locked: false,
+  resultCode: null,
 };
 
 function isValidSavedAnswers(value) {
@@ -82,6 +92,39 @@ function saveProgress() {
     // Persistence is optional; never block the live assessment.
   }
   updateStartLabels();
+}
+
+function reportUnlockKey(code) {
+  return `${REPORT_UNLOCK_PREFIX}${code}`;
+}
+
+function isReportUnlocked(code) {
+  try {
+    return localStorage.getItem(reportUnlockKey(code)) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function markReportUnlocked(code) {
+  try {
+    localStorage.setItem(reportUnlockKey(code), "1");
+  } catch {
+    // Delivery succeeded even when local persistence is unavailable.
+  }
+}
+
+function renderReportAccess(unlocked, name = "") {
+  elements.reportForm.hidden = unlocked;
+  elements.reportSuccess.hidden = !unlocked;
+  elements.reportDetail.hidden = !unlocked;
+  elements.reportSuccessTitle.textContent = name
+    ? `${name}, dein Report ist unterwegs.`
+    : "Dein Report ist freigeschaltet.";
+  if (!unlocked) {
+    elements.reportStatus.textContent = "";
+    elements.reportStatus.classList.remove("is-error");
+  }
 }
 
 function answeredCount() {
@@ -202,6 +245,7 @@ function showResult() {
 
   const result = calculateResult(state.answers);
   const code = encodeResult(state.answers);
+  state.resultCode = code;
   const resultUrl = buildResultUrl(code);
   window.history.replaceState({ resultCode: code }, "", resultUrl);
 
@@ -209,8 +253,10 @@ function showResult() {
   elements.scoreLockup.setAttribute("aria-label", `Unabhängigkeits-Score ${result.score} von 100`);
   elements.tierTitle.textContent = result.tier.title;
   elements.tierDescription.textContent = result.tier.description;
+  elements.scoreBottleneckName.textContent = result.bottleneck.name;
   elements.bottleneckName.textContent = result.bottleneck.name;
   elements.bottleneckDiagnosis.textContent = result.bottleneck.area.diagnosis;
+  elements.secondBottleneckName.textContent = result.secondBottleneck.name;
   elements.workflowTitle.textContent = result.bottleneck.area.workflow.title;
   elements.workflowDescription.textContent = result.bottleneck.area.workflow.description;
 
@@ -229,79 +275,108 @@ function showResult() {
 
     const head = document.createElement("div");
     head.className = "area-score-head";
+    const title = document.createElement("div");
+    title.className = "area-score-title";
     const name = document.createElement("span");
     name.className = "area-score-name";
     name.textContent = area.name;
+    const status = document.createElement("span");
+    status.className = "area-score-status";
+    status.textContent = area.status;
+    title.append(name, status);
     const value = document.createElement("span");
     value.className = "area-score-value";
     value.textContent = `${area.score} / 100`;
-    head.append(name, value);
+    head.append(title, value);
 
     const track = document.createElement("div");
     track.className = "area-score-track";
+    track.setAttribute("role", "meter");
     track.setAttribute("aria-label", `${area.name}: ${area.score} von 100`);
+    track.setAttribute("aria-valuemin", "0");
+    track.setAttribute("aria-valuemax", "100");
+    track.setAttribute("aria-valuenow", String(area.score));
     const fill = document.createElement("span");
     fill.className = "area-score-fill";
     fill.style.width = `${area.score}%`;
     track.append(fill);
-    row.append(head, track);
+
+    const insight = document.createElement("p");
+    insight.className = "area-score-insight";
+    insight.textContent = area.insight;
+    row.append(head, track, insight);
     elements.areaScores.append(row);
   });
 
-  const subject = `Mein Ohne-dich-Check: ${result.score}/100 · Engpass ${result.bottleneck.name}`;
-  const body = [
-    "Hi Falko,",
-    "",
-    `mein Unabhängigkeits-Score liegt bei ${result.score}/100.`,
-    `Größter Engpass: ${result.bottleneck.name}.`,
-    `Empfohlener erster Workflow: ${result.bottleneck.area.workflow.title}.`,
-    "",
-    `Ergebnis: ${resultUrl}`,
-    "",
-    "Ich würde gern den sinnvollsten ersten Hebel besprechen.",
-  ].join("\n");
-  elements.contact.href = `mailto:info@aiwon.de?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  elements.feedback.textContent = "";
+  renderReportAccess(isReportUnlocked(code));
   setView("result");
   elements.tierTitle.focus({ preventScroll: true });
 }
 
-async function copyText(text) {
-  if (navigator.clipboard?.writeText) {
-    await navigator.clipboard.writeText(text);
-    return;
-  }
-  const field = document.createElement("textarea");
-  field.value = text;
-  field.setAttribute("readonly", "");
-  field.className = "sr-only";
-  document.body.append(field);
-  field.select();
-  document.execCommand("copy");
-  field.remove();
+function setFieldValidity(field, valid) {
+  field.setAttribute("aria-invalid", String(!valid));
 }
 
-async function shareResult() {
-  const result = calculateResult(state.answers);
-  const url = buildResultUrl(encodeResult(state.answers));
-  const shareData = {
-    title: "Mein Ohne-dich-Check",
-    text: `Mein Unabhängigkeits-Score: ${result.score}/100. Größter Engpass: ${result.bottleneck.name}.`,
-    url,
-  };
+function reportFailureMessage(status) {
+  if (status === 400) return "Prüfe bitte Vorname und E-Mail.";
+  if (status === 429) return "Zu viele Versuche in kurzer Zeit. Warte bitte etwas und probiere es erneut.";
+  if (status === 502) return "Der Mailversand ist gerade nicht erreichbar. Dein Report wurde nicht freigeschaltet – bitte versuche es erneut.";
+  return "Das hat technisch nicht funktioniert. Dein Report wurde nicht freigeschaltet – bitte versuche es erneut.";
+}
+
+async function requestDetailReport(event) {
+  event.preventDefault();
+  const name = elements.reportName.value.trim();
+  const email = elements.reportEmail.value.trim().toLowerCase();
+  const nameValid = name.length > 0 && name.length <= 80;
+  const emailValid = elements.reportEmail.checkValidity() && email.length <= 254;
+  setFieldValidity(elements.reportName, nameValid);
+  setFieldValidity(elements.reportEmail, emailValid);
+
+  if (!nameValid || !emailValid || !state.resultCode) {
+    elements.reportStatus.textContent = "Prüfe bitte Vorname und E-Mail.";
+    elements.reportStatus.classList.add("is-error");
+    (nameValid ? elements.reportEmail : elements.reportName).focus();
+    return;
+  }
+
+  const submit = elements.reportForm.querySelector("button[type='submit']");
+  const originalLabel = submit.innerHTML;
+  submit.disabled = true;
+  submit.textContent = "REPORT WIRD ERSTELLT …";
+  elements.reportStatus.textContent = "Der Report wird erstellt und per E-Mail versendet.";
+  elements.reportStatus.classList.remove("is-error");
 
   try {
-    if (navigator.share) {
-      await navigator.share(shareData);
-      elements.feedback.textContent = "Ergebnis geteilt.";
-    } else {
-      await copyText(url);
-      elements.feedback.textContent = "Ergebnislink kopiert.";
+    const response = await fetch(REPORT_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name,
+        email,
+        resultCode: state.resultCode,
+        website: elements.reportWebsite.value,
+      }),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok || payload.delivery !== "sent") {
+      throw Object.assign(new Error("report_delivery_failed"), { status: response.status });
     }
+
+    markReportUnlocked(state.resultCode);
+    renderReportAccess(true, name);
+    elements.reportForm.reset();
+    window.requestAnimationFrame(() => {
+      const reportTop = elements.reportDetail.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: reportTop - 20, behavior: "smooth" });
+      elements.bottleneckName.focus({ preventScroll: true });
+    });
   } catch (error) {
-    if (error?.name !== "AbortError") {
-      elements.feedback.textContent = "Teilen ging nicht. Kopiere die URL aus der Adresszeile.";
-    }
+    elements.reportStatus.textContent = reportFailureMessage(error?.status);
+    elements.reportStatus.classList.add("is-error");
+  } finally {
+    submit.disabled = false;
+    submit.innerHTML = originalLabel;
   }
 }
 
@@ -311,6 +386,7 @@ function restart() {
     answers: Array(questions.length).fill(null),
     current: 0,
     locked: false,
+    resultCode: null,
   };
   window.history.replaceState({}, "", window.location.pathname);
   updateStartLabels();
@@ -341,7 +417,7 @@ elements.back.addEventListener("click", () => {
   renderQuestion();
 });
 elements.saveExit.addEventListener("click", saveAndExit);
-elements.share.addEventListener("click", shareResult);
+elements.reportForm.addEventListener("submit", requestDetailReport);
 elements.print.addEventListener("click", () => window.print());
 elements.restart.addEventListener("click", restart);
 window.addEventListener("popstate", () => {

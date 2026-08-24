@@ -26,8 +26,9 @@ Founder, Agenturinhaber und kleine Führungsteams, bei denen Wissen, Entscheidun
 1. Nutzer versteht die Kernfrage in wenigen Sekunden.
 2. Nutzer beantwortet 12 Fragen in 6 Bereichen.
 3. Der Check berechnet einen transparenten heuristischen Score.
-4. Nutzer sieht Gesamtlage, größten Engpass, sechs Bereichswerte und einen empfohlenen ersten Workflow.
-5. Nutzer kann das Ergebnis teilen, drucken oder Falko mit vorausgefülltem Ergebnis kontaktieren.
+4. Nutzer sieht sofort und anonym Score, Reifestufe und größten Engpass.
+5. Für Vorname + E-Mail erhält der Nutzer den vollständigen Detailreport mit sechs Bereichen, zweitem Engpass, 14-Tage-Workflow und konkreten Schritten per E-Mail und im Browser.
+6. Im freigeschalteten Report kann der Nutzer den Report als PDF speichern oder einen Termin anfragen.
 
 ## Diagnostic dimensions
 
@@ -57,10 +58,12 @@ Bei gleichem Tiefstwert priorisiert die Diagnose Entscheidungen, Ausführung, Wi
 - Fortschritt und Zurück-Navigation
 - Lokales Resume via `localStorage`
 - Stateless Ergebniscode in der URL, ohne PII
-- Personalisierte Diagnose und Bereichsbalken
-- Share-, Print- und Neustart-Funktion
-- Vorausgefüllte Kontakt-Mail an `info@aiwon.de`
-- Keine Analytics, Cookies oder extern gespeicherten Antworten
+- Sofortiger Scoring Pass mit Score, Reifestufe und größtem Engpass
+- Optionales Detailreport-Gate nur mit Vorname + E-Mail
+- Sechs ausgearbeitete Bereichsinterpretationen, zweiter Engpass und 14-Tage-Start
+- Transaktionale Zustellung über Tracker + Resend; kein Newsletter-Opt-in
+- Print-/PDF-, Termin-Anfrage- und Neustart-Funktion
+- Keine Analytics oder Cookies; Antworten bleiben lokal, der Server erhält nur den PII-freien Resultcode
 
 ## Visual system
 
@@ -100,14 +103,16 @@ Brand-Quelle ist ausschließlich die aktuelle Website `falkotreptau.com`, nicht 
 - Keine Runtime-Dependencies
 - Pure Scoring-Funktionen mit Node-Tests
 - GitHub Pages Deployment
-- Kein Backend im MVP
+- Bestehender Personal-Brand-Tracker als Report-Endpoint
+- Serverseitige Neu-Auswertung des Resultcodes statt Vertrauen in Browserwerte
 
 ## Explicit non-goals for v1
 
-- Kein E-Mail-Gate ohne echten Newsletter-/CRM-Provider
-- Kein PDF-Generator; Browser-Print reicht zunächst
+- Kein Gate vor Score, Reifestufe und größtem Engpass
+- Kein separater PDF-Generator; Browser-Print erzeugt den vierseitigen Report
 - Kein Login
-- Keine Datenbank
+- Keine Telefonnummer oder Firma im Report-Gate
+- Keine Newsletter-Anmeldung durch die Report-Anforderung
 - Keine behauptete wissenschaftliche Validierung
 - Keine 1:1-Kopie fremder Fragen, Copy oder Gestaltung
 
@@ -121,8 +126,7 @@ Brand-Quelle ist ausschließlich die aktuelle Website `falkotreptau.com`, nicht 
 
 ## Phase 2 after content validation
 
-- Double-Opt-in und Newsletter-/CRM-Anbindung
 - Frage- und Step-Analytics ohne unnötige PII
-- Ergebnis-Mail mit dauerhaftem Report-Link
+- Direkter Calendly-CTA, sobald ein funktionierender öffentlicher Booking-Link existiert
 - Eigene Domain, wahrscheinlich `check.falkotreptau.com`
 - Kalibrierung des Scorings anhand realer Antworten und Gespräche
