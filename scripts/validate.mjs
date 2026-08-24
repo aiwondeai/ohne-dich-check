@@ -1,10 +1,11 @@
 import { readFile } from "node:fs/promises";
 import { areas, questions } from "../quiz-data.js";
 
-const [html, css, app] = await Promise.all([
+const [html, css, app, ogImage] = await Promise.all([
   readFile(new URL("../index.html", import.meta.url), "utf8"),
   readFile(new URL("../styles.css", import.meta.url), "utf8"),
   readFile(new URL("../app.js", import.meta.url), "utf8"),
+  readFile(new URL("../assets/og-image.png", import.meta.url)),
 ]);
 
 const failures = [];
@@ -17,6 +18,11 @@ assert(questions.length === 12, "Expected exactly twelve questions.");
 assert(questions.every((question) => question.options.length === 4), "Every question needs four options.");
 assert(!/\[REPLACE\]|lorem ipsum|feature one/i.test(`${html}\n${css}\n${app}`), "Placeholder copy remains.");
 assert(!/scrollIntoView\s*\(/.test(app), "scrollIntoView is not allowed.");
+assert(!/fonts\.(googleapis|gstatic)\.com/.test(`${html}\n${css}`), "Fonts must be self-hosted.");
+assert(/Content-Security-Policy/.test(html), "Content Security Policy is missing.");
+assert(/property="og:image"/.test(html), "Open Graph image metadata is missing.");
+assert(ogImage.subarray(1, 4).toString("ascii") === "PNG", "Open Graph asset is not a PNG.");
+assert(ogImage.readUInt32BE(16) === 1200 && ogImage.readUInt32BE(20) === 630, "Open Graph image must be 1200 × 630.");
 
 const sections = html.match(/<section\b[^>]*>/g) ?? [];
 assert(sections.length > 0, "No sections found.");

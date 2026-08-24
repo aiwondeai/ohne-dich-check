@@ -3,11 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'" />
   <meta name="theme-color" content="#0a0a0a" />
   <meta name="description" content="12 Fragen zeigen dir, wie stark Wissen, Entscheidungen und Ausführung in deinem Unternehmen noch an dir hängen." />
+  <link rel="canonical" href="https://aiwondeai.github.io/ohne-dich-check/" />
   <meta property="og:title" content="Der Ohne-dich-Check · Falko Treptau" />
   <meta property="og:description" content="Wie viel deines Unternehmens hängt noch an dir? Finde deinen größten Engpass und den ersten System-Hebel." />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://aiwondeai.github.io/ohne-dich-check/" />
+  <meta property="og:image" content="https://aiwondeai.github.io/ohne-dich-check/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Wie viel deines Unternehmens hängt noch an dir? Der Ohne-dich-Check von Falko Treptau." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Der Ohne-dich-Check · Falko Treptau" />
+  <meta name="twitter:description" content="12 Fragen. 6 Bereiche. Dein größter Engpass und der erste System-Hebel." />
+  <meta name="twitter:image" content="https://aiwondeai.github.io/ohne-dich-check/assets/og-image.png" />
   <title>Der Ohne-dich-Check · Falko Treptau</title>
   <link rel="stylesheet" href="./styles.css" />
   <script type="module" src="./app.js"></script>
@@ -98,7 +109,7 @@
 
         <div class="quiz-card">
           <p class="question-kicker" id="question-kicker">FRAGE 01</p>
-          <h2 id="question-text">Eine wichtige Aufgabe fällt morgen an. Wo findet dein Team das nötige Wissen?</h2>
+          <h2 id="question-text" tabindex="-1">Eine wichtige Aufgabe fällt morgen an. Wo findet dein Team das nötige Wissen?</h2>
           <div class="options" id="options" aria-labelledby="question-text"></div>
         </div>
 
@@ -124,7 +135,7 @@
           </div>
           <div class="result-copy">
             <p class="eyebrow">DEINE AUSWERTUNG</p>
-            <h1 id="tier-title">Du bist das Betriebssystem.</h1>
+            <h1 id="tier-title" tabindex="-1">Du bist das Betriebssystem.</h1>
             <p class="lead" id="tier-description"></p>
             <div class="result-actions">
               <button class="button button-secondary" id="share-button" type="button">Ergebnis teilen</button>
@@ -171,7 +182,7 @@
             <a class="button button-primary" id="contact-link" href="mailto:info@aiwon.de">Ergebnis an Falko schicken <span aria-hidden="true">→</span></a>
             <button class="button button-secondary" id="restart-button" type="button">Check neu starten</button>
           </div>
-          <p class="disclaimer">Der Check ist eine operative Heuristik, kein wissenschaftlich validiertes Assessment. Antworten und Ergebniscode enthalten keine personenbezogenen Daten und werden von dieser Website nicht gespeichert.</p>
+          <p class="disclaimer">Der Check ist eine operative Heuristik, kein wissenschaftlich validiertes Assessment. Antworten werden ausschließlich lokal in deinem Browser gespeichert. Der teilbare Ergebniscode enthält nur zwölf Punktwerte und keine eingegebenen personenbezogenen Daten.</p>
         </div>
       </section>
     </div>

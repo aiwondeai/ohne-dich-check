@@ -54,6 +54,14 @@ function isValidSavedAnswers(value) {
     && value.every((answer) => answer === null || (Number.isInteger(answer) && answer >= 0 && answer <= 3));
 }
 
+function clearSavedProgress() {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // The assessment still works when browser storage is unavailable.
+  }
+}
+
 function loadProgress() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
@@ -63,12 +71,16 @@ function loadProgress() {
       state.current = firstOpen === -1 ? questions.length - 1 : firstOpen;
     }
   } catch {
-    localStorage.removeItem(STORAGE_KEY);
+    clearSavedProgress();
   }
 }
 
 function saveProgress() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ answers: state.answers }));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ answers: state.answers }));
+  } catch {
+    // Persistence is optional; never block the live assessment.
+  }
   updateStartLabels();
 }
 
@@ -97,7 +109,7 @@ function startCheck() {
   state.current = firstOpen === -1 ? 0 : firstOpen;
   if (firstOpen === -1) {
     state.answers = Array(questions.length).fill(null);
-    localStorage.removeItem(STORAGE_KEY);
+    clearSavedProgress();
     window.history.replaceState({}, "", window.location.pathname);
     updateStartLabels();
   }
@@ -139,6 +151,7 @@ function renderQuestion() {
 
   elements.back.disabled = state.current === 0;
   elements.announcer.textContent = `Frage ${state.current + 1} von ${questions.length}. Bereich ${question.area.name}.`;
+  elements.questionText.focus({ preventScroll: true });
   state.locked = false;
 }
 
@@ -251,6 +264,7 @@ function showResult() {
   elements.contact.href = `mailto:info@aiwon.de?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   elements.feedback.textContent = "";
   setView("result");
+  elements.tierTitle.focus({ preventScroll: true });
 }
 
 async function copyText(text) {
@@ -293,7 +307,7 @@ async function shareResult() {
 }
 
 function restart() {
-  localStorage.removeItem(STORAGE_KEY);
+  clearSavedProgress();
   state = {
     answers: Array(questions.length).fill(null),
     current: 0,
