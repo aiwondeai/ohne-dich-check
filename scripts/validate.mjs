@@ -30,7 +30,7 @@ assert(!/name="(?:phone|company|firma|telefon)"/i.test(html), "Report gate must 
 assert(/Kein Newsletter/i.test(html), "Transactional purpose must be explained at the form.");
 assert(/https:\/\/falkotreptau\.com\/api\/ohne-dich-report/.test(app), "Resend-backed report endpoint is missing.");
 assert(/Report speichern/.test(html), "Print action must be labelled Report speichern.");
-assert(/https:\/\/falkotreptau\.com\/#contact/.test(html) && /Termin anfragen/i.test(html), "Temporary contact CTA is missing.");
+assert(/https:\/\/falkotreptau\.com\/#newsletter/.test(html) && /Termin anfragen/i.test(html), "Temporary contact CTA must point to the live contact trigger section.");
 assert(/connect-src[^;]*https:\/\/falkotreptau\.com/.test(html), "CSP must allow the report API.");
 assert(/payload\.delivery !== "sent"/.test(app), "Report must unlock only after confirmed email delivery.");
 assert(/REPORT_UNLOCK_PREFIX/.test(app) && /localStorage\.setItem\(reportUnlockKey\(code\), "1"\)/.test(app), "Report unlock must store only a boolean per result code.");
