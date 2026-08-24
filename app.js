@@ -95,7 +95,12 @@ function setView(view) {
 function startCheck() {
   const firstOpen = state.answers.findIndex((answer) => answer === null);
   state.current = firstOpen === -1 ? 0 : firstOpen;
-  if (firstOpen === -1) state.answers = Array(questions.length).fill(null);
+  if (firstOpen === -1) {
+    state.answers = Array(questions.length).fill(null);
+    localStorage.removeItem(STORAGE_KEY);
+    window.history.replaceState({}, "", window.location.pathname);
+    updateStartLabels();
+  }
   setView("quiz");
   renderQuestion();
 }
