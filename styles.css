@@ -26,7 +26,7 @@
 
 :root {
   --bg: #0a0a0a;
-  --surface: #141414;
+  --surface: rgba(255, 255, 255, 0.04);
   --text: #ffffff;
   --black: #0a0a0a;
   --verified: #1d9bf0;

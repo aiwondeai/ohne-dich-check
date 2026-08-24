@@ -24,6 +24,7 @@ assert(questions.every((question) => question.options.length === 4), "Every ques
 assert(!/\[REPLACE\]|lorem ipsum|feature one/i.test(`${html}\n${css}\n${app}`), "Placeholder copy remains.");
 assert(!/scrollIntoView\s*\(/.test(app), "scrollIntoView is not allowed.");
 assert(!/score-(?:dial|angle)/.test(`${html}\n${css}\n${app}`), "Stale score-gauge implementation remains.");
+assert(!/#141414|#f5f3ee/i.test(`${css}\n${favicon}`), "Brand palette must use #0a0a0a, white, and transparent-white surfaces.");
 assert(!/fonts\.(googleapis|gstatic)\.com/.test(`${html}\n${css}`), "Fonts must be self-hosted.");
 assert(/Content-Security-Policy/.test(html), "Content Security Policy is missing.");
 assert(/property="og:image"/.test(html), "Open Graph image metadata is missing.");
