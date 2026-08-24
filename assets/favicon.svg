@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Falko Treptau">
+  <rect width="64" height="64" rx="12" fill="#0a0a0a"/>
+  <path d="M17 15h31v9H27v8h18v9H27v16H17z" fill="#f5f3ee"/>
+  <circle cx="50" cy="50" r="6" fill="#3975ff"/>
+</svg>
