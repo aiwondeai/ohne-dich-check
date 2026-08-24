@@ -14,7 +14,8 @@ Viele Unternehmen nutzen Tools und einzelne Automationen, bleiben aber organisat
 - Keine erfundene Wissenschaftlichkeit.
 - Erst eine brauchbare Diagnose, dann ein Angebot.
 - Die Auswertung muss bereits ohne Sales Call nützlich sein.
-- Mechanik des Autopilot-Checks adaptieren, Copy, Modell und Branding vollständig eigenständig halten.
+- Vom Autopilot-Check bleibt ausschließlich das abstrakte Prinzip „kurzer Check → konkrete Diagnose“.
+- Keine Übernahme seiner visuellen Zustände, Segment-Fortschritte, Score-Teaser, Report-Komposition, Bereichs-Intros oder Funnel-Dramaturgie.
 
 ## Target user
 
@@ -63,14 +64,35 @@ Bei gleichem Tiefstwert priorisiert die Diagnose Entscheidungen, Ausführung, Wi
 
 ## Visual system
 
-Angelehnt an die bestehende Falko-Treptau-Visitenkarte:
+Brand-Quelle ist ausschließlich die aktuelle Website `falkotreptau.com`, nicht der analysierte Autopilot-Funnel.
 
-- fast schwarzer Hintergrund
-- warmes Off-White
-- große, enge Sans-Serif-Headlines
-- kleine Mono-/Uppercase-Metadaten
-- sehr reduzierter Cobalt-Akzent
-- großzügige Leerräume, harte Linien statt SaaS-Kartenfriedhof
+### Falko Brand-DNA
+
+- strikt monochrom: `#0a0a0a`, Weiß und transparente Weißabstufungen
+- Archivo Black als offen lizenzierte Display-Stimme mit ähnlicher Wucht wie Falkos Website, Outfit als Leseschrift
+- zentrierte, fast plakative Komposition statt typischer SaaS-Zweispalter
+- Falkos schmales Portrait als menschlicher Anker
+- Headlines in Versalien mit ruhiger, massiver Präsenz
+- große schwarze Atemräume und ein subtiler weißer Radial-Glow
+- weiße Pillen-CTAs, feine Linien und runde 18px-Flächen
+- Bewegung über Reveal, Unschärfe und kleine räumliche Verschiebungen; keine bunte Produktanimation
+
+### Eigenständige Übersetzung für den Check
+
+- Hero als diagnostisches Brand-Poster: Portrait, Produktname und Kernfrage in einer zentrierten Achse
+- Quiz als fokussierter Interviewraum mit großer Fragennummer und listenartigen Antwortzeilen
+- Ergebnis als typografischer Befund; kein Dashboard und kein kreisförmiger Standard-Score
+- Bereichsauswertung als reduzierte Zeilenliste, nicht als kopierte Funnel-/Report-Struktur
+- Blau nur im Falko-Portrait/Verified-Detail, nicht als UI-Farbe
+
+### Avoid list
+
+- keine blaue SaaS-CTA-Farbe
+- keine Split-Hero-Karte „Stell dir vor“
+- keine Mono-Tech-Ästhetik als dominantes Gestaltungsmittel
+- kein kreisförmiges Score-Gauge
+- keine drei generischen Feature-Karten
+- keine visuelle oder textliche 1:1-Annäherung an `check.the-autopilot.com`
 
 ## Technical shape
 

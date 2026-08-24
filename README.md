@@ -36,3 +36,9 @@ Zwei Fragen je Bereich, jeweils 0–3 Punkte. Maximum: 36 Rohpunkte, für die Da
 ## Deployment
 
 GitHub Pages veröffentlicht direkt aus `main` und dem Repository-Root.
+
+## Assets und Lizenzen
+
+- Anwendungscode: MIT, siehe `LICENSE`.
+- Archivo Black und Outfit: SIL Open Font License 1.1, siehe `assets/fonts/OFL-Archivo-Black.txt` und `assets/fonts/OFL-Outfit.txt`.
+- `assets/falko-portrait.webp` und die daraus abgeleitete `assets/og-image.png`: persönliche Markenassets von Falko Treptau, nicht Bestandteil der MIT-Lizenz.

@@ -1,11 +1,16 @@
 import { readFile } from "node:fs/promises";
 import { areas, questions } from "../quiz-data.js";
 
-const [html, css, app, ogImage] = await Promise.all([
+const [html, css, app, ogImage, portrait, displayFont, favicon, archivoLicense, outfitLicense] = await Promise.all([
   readFile(new URL("../index.html", import.meta.url), "utf8"),
   readFile(new URL("../styles.css", import.meta.url), "utf8"),
   readFile(new URL("../app.js", import.meta.url), "utf8"),
   readFile(new URL("../assets/og-image.png", import.meta.url)),
+  readFile(new URL("../assets/falko-portrait.webp", import.meta.url)),
+  readFile(new URL("../assets/fonts/archivo-black-regular.ttf", import.meta.url)),
+  readFile(new URL("../assets/favicon.svg", import.meta.url), "utf8"),
+  readFile(new URL("../assets/fonts/OFL-Archivo-Black.txt", import.meta.url), "utf8"),
+  readFile(new URL("../assets/fonts/OFL-Outfit.txt", import.meta.url), "utf8"),
 ]);
 
 const failures = [];
@@ -18,11 +23,21 @@ assert(questions.length === 12, "Expected exactly twelve questions.");
 assert(questions.every((question) => question.options.length === 4), "Every question needs four options.");
 assert(!/\[REPLACE\]|lorem ipsum|feature one/i.test(`${html}\n${css}\n${app}`), "Placeholder copy remains.");
 assert(!/scrollIntoView\s*\(/.test(app), "scrollIntoView is not allowed.");
+assert(!/score-(?:dial|angle)/.test(`${html}\n${css}\n${app}`), "Stale score-gauge implementation remains.");
 assert(!/fonts\.(googleapis|gstatic)\.com/.test(`${html}\n${css}`), "Fonts must be self-hosted.");
 assert(/Content-Security-Policy/.test(html), "Content Security Policy is missing.");
 assert(/property="og:image"/.test(html), "Open Graph image metadata is missing.");
 assert(ogImage.subarray(1, 4).toString("ascii") === "PNG", "Open Graph asset is not a PNG.");
 assert(ogImage.readUInt32BE(16) === 1200 && ogImage.readUInt32BE(20) === 630, "Open Graph image must be 1200 × 630.");
+assert(portrait.length > 10_000, "Falko portrait is unexpectedly small.");
+assert(portrait.subarray(0, 4).toString("ascii") === "RIFF", "Portrait must be a WebP container.");
+assert(portrait.subarray(8, 12).toString("ascii") === "WEBP", "Portrait must be WebP.");
+assert(displayFont.readUInt32BE(0) === 0x00010000, "Display font must be a TrueType font.");
+assert(/<svg[\s>]/.test(favicon), "Favicon must be SVG.");
+assert(/SIL Open Font License, Version 1\.1/.test(archivoLicense), "Archivo Black license is missing.");
+assert(/SIL Open Font License, Version 1\.1/.test(outfitLicense), "Outfit license is missing.");
+assert(html.includes("./assets/falko-portrait.webp"), "Portrait must be referenced from HTML.");
+assert(css.includes("./assets/fonts/archivo-black-regular.ttf"), "Display font must be referenced from CSS.");
 
 const sections = html.match(/<section\b[^>]*>/g) ?? [];
 assert(sections.length > 0, "No sections found.");
@@ -36,6 +51,10 @@ assert(/@media\s*\(max-width:\s*920px\)/.test(css), "Desktop-to-mobile breakpoin
 assert(/@media\s*\(max-width:\s*620px\)/.test(css), "Small-mobile breakpoint is missing.");
 assert(/prefers-reduced-motion/.test(css), "Reduced-motion support is missing.");
 assert(/aria-live="polite"/.test(html), "Result feedback needs an aria-live region.");
+
+const printStyles = css.slice(css.indexOf("@media print"));
+assert(printStyles.includes("--muted: rgba(0, 0, 0"), "Print colors must switch to dark text on white.");
+assert(printStyles.includes(".skip-link"), "Skip link must be hidden in print.");
 
 if (failures.length) {
   console.error(failures.map((failure) => `- ${failure}`).join("\n"));

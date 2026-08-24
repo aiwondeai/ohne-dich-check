@@ -8,110 +8,109 @@
   <meta name="description" content="12 Fragen zeigen dir, wie stark Wissen, Entscheidungen und Ausführung in deinem Unternehmen noch an dir hängen." />
   <link rel="canonical" href="https://aiwondeai.github.io/ohne-dich-check/" />
   <meta property="og:title" content="Der Ohne-dich-Check · Falko Treptau" />
-  <meta property="og:description" content="Wie viel deines Unternehmens hängt noch an dir? Finde deinen größten Engpass und den ersten System-Hebel." />
+  <meta property="og:description" content="Wie viel deines Unternehmens läuft ohne deinen Dauerzugriff? Finde deinen größten Engpass und den ersten System-Hebel." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://aiwondeai.github.io/ohne-dich-check/" />
   <meta property="og:image" content="https://aiwondeai.github.io/ohne-dich-check/assets/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Wie viel deines Unternehmens hängt noch an dir? Der Ohne-dich-Check von Falko Treptau." />
+  <meta property="og:image:alt" content="Ohne dich. Was läuft? Der Ohne-dich-Check von Falko Treptau." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Der Ohne-dich-Check · Falko Treptau" />
-  <meta name="twitter:description" content="12 Fragen. 6 Bereiche. Dein größter Engpass und der erste System-Hebel." />
+  <meta name="twitter:description" content="12 Fragen. 6 Bereiche. Ein konkreter erster System-Hebel." />
   <meta name="twitter:image" content="https://aiwondeai.github.io/ohne-dich-check/assets/og-image.png" />
   <title>Der Ohne-dich-Check · Falko Treptau</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="./assets/falko-portrait.webp" as="image" type="image/webp" />
   <link rel="stylesheet" href="./styles.css" />
   <script type="module" src="./app.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
+  <div class="page-glow" aria-hidden="true"></div>
 
-  <header class="topbar" data-od-id="topbar">
-    <div class="container topbar-inner">
-      <a class="brand" href="https://falkotreptau.com/" aria-label="Falko Treptau Homepage">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="https://falkotreptau.com/" aria-label="Zur Website von Falko Treptau">
         <span>FALKO TREPTAU</span>
         <span class="brand-project">/ OHNE-DICH-CHECK</span>
       </a>
-      <button class="text-button" type="button" data-start>Check starten <span aria-hidden="true">→</span></button>
+      <button class="text-button topbar-action" type="button" data-start>Check starten <span aria-hidden="true">↗</span></button>
     </div>
   </header>
 
   <main id="main">
     <div id="landing-view">
-      <section class="section hero" data-od-id="hero">
-        <div class="container hero-grid">
-          <div class="hero-copy">
-            <p class="eyebrow">03 MIN · OPERATIVER SELF-AUDIT</p>
-            <h1>Wie viel deines Unternehmens hängt noch an dir?</h1>
-            <p class="lead">12 Fragen zeigen dir deinen größten personellen Engpass – und welchen Workflow du zuerst bauen solltest.</p>
-            <div class="hero-actions">
-              <button class="button button-primary" type="button" data-start>Abhängigkeit messen <span aria-hidden="true">→</span></button>
-              <a class="button button-secondary" href="#method">So funktioniert der Check</a>
-            </div>
-            <p class="privacy-note">Kein Login. Keine gespeicherten Firmendaten. Deine Antworten bleiben im Browser.</p>
-          </div>
-
-          <aside class="signal-panel" aria-label="Leitfrage des Checks">
-            <p class="signal-label">STELL DIR VOR</p>
-            <p class="signal-question">Du bist zwei Wochen komplett offline.</p>
-            <div class="signal-lines">
-              <div><span>01</span><p>Wer findet das nötige Wissen?</p></div>
-              <div><span>02</span><p>Wer trifft die Entscheidungen?</p></div>
-              <div><span>03</span><p>Was läuft trotzdem zuverlässig weiter?</p></div>
-            </div>
-            <p class="signal-close">Deine Antworten darauf sind ehrlicher als jede AI-Readiness-Folie.</p>
-          </aside>
+      <section class="brand-hero" data-od-id="hero">
+        <div class="hero-portrait" aria-hidden="true">
+          <img src="./assets/falko-portrait.webp" alt="" width="1200" height="1200" />
+          <span class="verified-mark">
+            <svg viewBox="0 0 24 24" role="presentation">
+              <path d="M12 1.8 15 4l3.7.2.9 3.6 2.2 3-2.2 3-.9 3.6-3.7.2-3 2.2-3-2.2-3.7-.2-.9-3.6-2.2-3 2.2-3 .9-3.6L9 4l3-2.2Z" />
+              <path d="m8.2 12 2.3 2.3 5.3-5.3" />
+            </svg>
+          </span>
         </div>
+
+        <p class="hero-kicker">OPERATIVE SYSTEM-DIAGNOSE</p>
+        <h1 class="hero-title" aria-label="Ohne dich. Was läuft?">
+          <span>OHNE DICH.</span>
+          <span>WAS LÄUFT?</span>
+        </h1>
+        <p class="hero-question">Wie viel deines Unternehmens funktioniert ohne deinen Dauerzugriff?</p>
+        <p class="hero-copy">12 ehrliche Antworten zeigen dir, wo dein Unternehmen noch an dir hängt – und welchen System-Hebel du zuerst bauen solltest.</p>
+
+        <button class="button button-primary hero-cta" type="button" data-start>
+          CHECK STARTEN <span aria-hidden="true">→</span>
+        </button>
+
+        <div class="hero-facts" aria-label="Eckdaten des Checks">
+          <span>03 MINUTEN</span>
+          <span>12 FRAGEN</span>
+          <span>KEIN LOGIN</span>
+        </div>
+
+        <a class="scroll-cue" href="#statement">
+          <span>WARUM DAS ZÄHLT</span>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 8 5 5 5-5" /></svg>
+        </a>
       </section>
 
-      <section class="section method" id="method" data-od-id="method">
-        <div class="container">
-          <div class="section-heading">
-            <p class="eyebrow">DEIN ERGEBNIS</p>
-            <h2>Kein digitales Horoskop. Eine konkrete Startdiagnose.</h2>
-          </div>
-          <div class="outcome-grid">
-            <article class="outcome">
-              <span class="outcome-number">01</span>
-              <h3>Unabhängigkeits-Score</h3>
-              <p>Eine lesbare Einordnung über sechs operative Bereiche – ohne behauptete Wissenschaftlichkeit.</p>
-            </article>
-            <article class="outcome">
-              <span class="outcome-number">02</span>
-              <h3>Größter Engpass</h3>
-              <p>Du siehst, wo dein Unternehmen noch am stärksten auf deinen persönlichen Zugriff angewiesen ist.</p>
-            </article>
-            <article class="outcome">
-              <span class="outcome-number">03</span>
-              <h3>Erster Workflow</h3>
-              <p>Statt einer Tool-Liste bekommst du einen sinnvollen ersten System-Hebel und drei konkrete Schritte.</p>
-            </article>
-          </div>
-          <button class="button button-primary method-cta" type="button" data-start>12 Fragen starten <span aria-hidden="true">→</span></button>
-        </div>
+      <section class="statement" id="statement" data-od-id="statement">
+        <p class="kicker">DAS EIGENTLICHE PROBLEM</p>
+        <h2>
+          DEIN UNTERNEHMEN SOLL WACHSEN.<br />
+          <span>NICHT DEINE VERFÜGBARKEIT.</span>
+        </h2>
+        <p class="statement-copy">Mehr Tools lösen keine Personenabhängigkeit. Klare Systeme schon.</p>
+        <button class="button button-primary statement-cta" type="button" data-start>
+          ABHÄNGIGKEIT PRÜFEN <span aria-hidden="true">→</span>
+        </button>
+        <p class="privacy-note">Keine Firmendaten. Keine Analytics. Antworten bleiben lokal in deinem Browser.</p>
       </section>
     </div>
 
-    <section class="section quiz-section" id="quiz-view" data-od-id="quiz" hidden>
+    <section class="quiz-stage" id="quiz-view" data-od-id="quiz" hidden>
       <div class="quiz-shell">
-        <div class="progress-head">
-          <span class="meta">BEREICH <span id="area-count">01 / 06</span></span>
-          <span class="meta" id="question-count">01 / 12</span>
+        <div class="quiz-progress-head">
+          <span>BEREICH <span id="area-count">01 / 06</span></span>
+          <span id="question-count">01 / 12</span>
         </div>
         <div class="progress-track" role="progressbar" aria-label="Fortschritt" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0">
           <span id="progress-bar"></span>
         </div>
 
         <div class="quiz-context">
-          <p class="area-name" id="area-name">Wissen & Standards</p>
+          <p class="area-name" id="area-name">Wissen &amp; Standards</p>
           <p class="area-prompt" id="area-prompt">Ist Wissen auffindbar – oder an Köpfe gebunden?</p>
         </div>
 
-        <div class="quiz-card">
-          <p class="question-kicker" id="question-kicker">FRAGE 01</p>
-          <h2 id="question-text" tabindex="-1">Eine wichtige Aufgabe fällt morgen an. Wo findet dein Team das nötige Wissen?</h2>
-          <div class="options" id="options" aria-labelledby="question-text"></div>
+        <div class="question-layout">
+          <p class="question-number" id="question-kicker" aria-hidden="true">01</p>
+          <div class="question-content">
+            <h2 id="question-text" tabindex="-1">Eine wichtige Aufgabe fällt morgen an. Wo findet dein Team das nötige Wissen?</h2>
+            <div class="options" id="options" aria-labelledby="question-text"></div>
+          </div>
         </div>
 
         <div class="quiz-controls">
@@ -123,39 +122,33 @@
     </section>
 
     <div id="result-view" hidden>
-      <section class="section result-hero" data-od-id="result-summary">
-        <div class="container result-summary-grid">
-          <div class="score-block">
-            <div class="score-dial" id="score-dial" aria-label="Unabhängigkeits-Score">
-              <div class="score-dial-inner">
-                <span class="score-value" id="score-value">0</span>
-                <span class="score-unit">/ 100</span>
-              </div>
-            </div>
-            <p class="meta score-label">HEURISTISCHER UNABHÄNGIGKEITS-SCORE</p>
+      <section class="result-intro" data-od-id="result-summary">
+        <div class="result-shell">
+          <p class="kicker">DEIN OPERATIVER BEFUND</p>
+          <div class="score-lockup" id="score-lockup" aria-label="Unabhängigkeits-Score">
+            <span class="score-value" id="score-value">0</span>
+            <span class="score-unit">/100</span>
           </div>
-          <div class="result-copy">
-            <p class="eyebrow">DEINE AUSWERTUNG</p>
-            <h1 id="tier-title" tabindex="-1">Du bist das Betriebssystem.</h1>
-            <p class="lead" id="tier-description"></p>
-            <div class="result-actions">
-              <button class="button button-secondary" id="share-button" type="button">Ergebnis teilen</button>
-              <button class="button button-secondary" id="print-button" type="button">Report drucken</button>
-            </div>
-            <p class="share-feedback" id="share-feedback" aria-live="polite"></p>
+          <p class="score-label">UNABHÄNGIGKEITS-SCORE</p>
+          <h1 id="tier-title" tabindex="-1">Du bist das Betriebssystem.</h1>
+          <p class="result-lead" id="tier-description"></p>
+          <div class="result-actions">
+            <button class="button button-ghost" id="share-button" type="button">Ergebnis teilen</button>
+            <button class="button button-ghost" id="print-button" type="button">Report drucken</button>
           </div>
+          <p class="share-feedback" id="share-feedback" aria-live="polite"></p>
         </div>
       </section>
 
-      <section class="section bottleneck-section" data-od-id="bottleneck">
-        <div class="container bottleneck-grid">
-          <div class="section-heading compact">
-            <p class="eyebrow">GRÖSSTER ENGPASS</p>
+      <section class="bottleneck-section" data-od-id="bottleneck">
+        <div class="section-shell bottleneck-layout">
+          <div class="bottleneck-copy">
+            <p class="kicker">DEIN GRÖSSTER ENGPASS</p>
             <h2 id="bottleneck-name">Entscheidungen</h2>
-            <p class="section-copy" id="bottleneck-diagnosis"></p>
+            <p id="bottleneck-diagnosis"></p>
           </div>
-          <div class="workflow-card">
-            <p class="meta">STARTE HIER</p>
+          <div class="workflow-panel">
+            <span class="panel-tag">HIER ANFANGEN</span>
             <h3 id="workflow-title"></h3>
             <p id="workflow-description"></p>
             <ol id="action-list"></ol>
@@ -163,36 +156,39 @@
         </div>
       </section>
 
-      <section class="section area-section" data-od-id="area-scores">
-        <div class="container area-grid">
-          <div class="section-heading compact">
-            <p class="eyebrow">DIE SECHS BEREICHE</p>
-            <h2>Wo deine Systeme tragen – und wo noch nicht.</h2>
-            <p class="section-copy">Der schwächste Wert ist kein Urteil. Er ist der sinnvollste Startpunkt.</p>
+      <section class="area-section" data-od-id="area-scores">
+        <div class="section-shell area-layout">
+          <div class="area-heading">
+            <p class="kicker">DIE SECHS BEREICHE</p>
+            <h2>WO ES TRÄGT.<br />WO DU NOCH TRÄGST.</h2>
+            <p>Der schwächste Wert ist kein Urteil. Er ist dein sinnvollster Startpunkt.</p>
           </div>
           <div class="area-scores" id="area-scores"></div>
         </div>
       </section>
 
-      <section class="section contact-section" data-od-id="contact">
-        <div class="container contact-inner">
-          <p class="eyebrow">NÄCHSTER SCHRITT</p>
-          <h2>Willst du aus deinem Engpass einen funktionierenden Workflow machen?</h2>
-          <p class="lead">Schick Falko dein Ergebnis. Kein AI-Transformations-Theater – wir schauen auf den klarsten ersten Hebel.</p>
-          <div class="contact-actions">
-            <a class="button button-primary" id="contact-link" href="mailto:info@aiwon.de">Ergebnis an Falko schicken <span aria-hidden="true">→</span></a>
-            <button class="button button-secondary" id="restart-button" type="button">Check neu starten</button>
+      <section class="contact-section" data-od-id="contact">
+        <div class="contact-inner">
+          <div class="contact-portrait" aria-hidden="true">
+            <img src="./assets/falko-portrait.webp" alt="" width="1200" height="1200" />
           </div>
-          <p class="disclaimer">Der Check ist eine operative Heuristik, kein wissenschaftlich validiertes Assessment. Antworten werden ausschließlich lokal in deinem Browser gespeichert. Der teilbare Ergebniscode enthält nur zwölf Punktwerte und keine eingegebenen personenbezogenen Daten.</p>
+          <p class="kicker">NÄCHSTER SCHRITT</p>
+          <h2>AUS DEM ENGPASS<br />EIN SYSTEM MACHEN.</h2>
+          <p>Schick mir dein Ergebnis. Wir schauen auf den klarsten ersten Hebel – ohne AI-Transformations-Theater.</p>
+          <div class="contact-actions">
+            <a class="button button-primary" id="contact-link" href="mailto:info@aiwon.de">ERGEBNIS AN FALKO <span aria-hidden="true">→</span></a>
+            <button class="button button-ghost" id="restart-button" type="button">Check neu starten</button>
+          </div>
+          <p class="disclaimer">Operative Heuristik, kein wissenschaftlich validiertes Assessment. Antworten werden ausschließlich lokal gespeichert. Der teilbare Ergebniscode enthält nur zwölf Punktwerte und keine eingegebenen personenbezogenen Daten.</p>
         </div>
       </section>
     </div>
   </main>
 
-  <footer class="pagefoot" data-od-id="footer">
-    <div class="container footer-inner">
-      <span>© 2026 Falko Treptau</span>
-      <span class="footer-claim">Ich baue Systeme, die Zeit zurückgeben.</span>
+  <footer class="pagefoot">
+    <div class="footer-inner">
+      <a href="https://falkotreptau.com/">FALKO TREPTAU</a>
+      <span>ICH BAUE SYSTEME, DIE ZEIT ZURÜCKGEBEN.</span>
       <nav aria-label="Rechtliches">
         <a href="https://www.aiwon.de/impressum.html">Impressum</a>
         <a href="https://www.aiwon.de/datenschutz.html">Datenschutz</a>

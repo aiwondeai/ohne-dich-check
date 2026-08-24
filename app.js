@@ -6,7 +6,7 @@ import {
 } from "./quiz-data.js";
 
 const STORAGE_KEY = "ohne-dich-check:v1";
-const letters = ["A", "B", "C", "D"];
+const answerKeys = ["1", "2", "3", "4"];
 
 const elements = {
   landing: document.querySelector("#landing-view"),
@@ -25,7 +25,7 @@ const elements = {
   back: document.querySelector("#back-button"),
   saveExit: document.querySelector("#save-exit-button"),
   announcer: document.querySelector("#question-announcer"),
-  scoreDial: document.querySelector("#score-dial"),
+  scoreLockup: document.querySelector("#score-lockup"),
   scoreValue: document.querySelector("#score-value"),
   tierTitle: document.querySelector("#tier-title"),
   tierDescription: document.querySelector("#tier-description"),
@@ -126,7 +126,7 @@ function renderQuestion() {
   elements.progressBar.style.width = `${(count / questions.length) * 100}%`;
   elements.areaName.textContent = question.area.name;
   elements.areaPrompt.textContent = question.area.prompt;
-  elements.questionKicker.textContent = `FRAGE ${String(state.current + 1).padStart(2, "0")}`;
+  elements.questionKicker.textContent = String(state.current + 1).padStart(2, "0");
   elements.questionText.textContent = question.text;
   elements.options.replaceChildren();
 
@@ -139,7 +139,7 @@ function renderQuestion() {
 
     const letter = document.createElement("span");
     letter.className = "option-letter";
-    letter.textContent = letters[index];
+    letter.textContent = answerKeys[index];
     letter.setAttribute("aria-hidden", "true");
 
     const label = document.createElement("span");
@@ -206,8 +206,7 @@ function showResult() {
   window.history.replaceState({ resultCode: code }, "", resultUrl);
 
   elements.scoreValue.textContent = String(result.score);
-  elements.scoreDial.style.setProperty("--score-angle", `${result.score * 3.6}deg`);
-  elements.scoreDial.setAttribute("aria-label", `Unabhängigkeits-Score ${result.score} von 100`);
+  elements.scoreLockup.setAttribute("aria-label", `Unabhängigkeits-Score ${result.score} von 100`);
   elements.tierTitle.textContent = result.tier.title;
   elements.tierDescription.textContent = result.tier.description;
   elements.bottleneckName.textContent = result.bottleneck.name;
@@ -351,7 +350,7 @@ window.addEventListener("popstate", () => {
 
 document.addEventListener("keydown", (event) => {
   if (elements.quiz.hidden || state.locked) return;
-  const index = letters.indexOf(event.key.toUpperCase());
+  const index = answerKeys.indexOf(event.key);
   const option = elements.options.children[index];
   if (option) option.click();
 });
