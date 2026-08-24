@@ -32,8 +32,9 @@ assert(/https:\/\/falkotreptau\.com\/api\/ohne-dich-report/.test(app), "Resend-b
 assert(/Report speichern/.test(html), "Print action must be labelled Report speichern.");
 assert(/https:\/\/falkotreptau\.com\/#newsletter/.test(html) && /Termin anfragen/i.test(html), "Temporary contact CTA must point to the live contact trigger section.");
 assert(/connect-src[^;]*https:\/\/falkotreptau\.com/.test(html), "CSP must allow the report API.");
-assert(/payload\.delivery !== "sent"/.test(app), "Report must unlock only after confirmed email delivery.");
-assert(/REPORT_UNLOCK_PREFIX/.test(app) && /localStorage\.setItem\(reportUnlockKey\(code\), "1"\)/.test(app), "Report unlock must store only a boolean per result code.");
+assert(/payload\.delivery !== "sent"[^\n]*!isDetailedReport\(payload\.report\)/.test(app), "Report must unlock only after confirmed delivery with a server report.");
+assert(/REPORT_STORAGE_PREFIX/.test(app) && /JSON\.stringify\(report\)/.test(app), "Delivered report must be cached by result code.");
+assert(areas.every((area) => !("diagnosis" in area) && !("workflow" in area) && !("actions" in area) && !("insights" in area)), "Detailed report content must not ship in the public quiz bundle.");
 assert(!/localStorage\.setItem\([^;]*(?:email|name)/i.test(app), "PII must not be written to localStorage.");
 assert(/\.hero-title\s*\{[\s\S]*?(?:row-)?gap:\s*clamp\(/.test(css), "Hero title needs an explicit responsive line gap.");
 assert(/\.question-number\s*\{[\s\S]*?transform:\s*translateX\(-48px\)/.test(css), "Desktop question numbers must move 48px left.");

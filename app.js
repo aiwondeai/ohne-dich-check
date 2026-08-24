@@ -6,7 +6,7 @@ import {
 } from "./quiz-data.js";
 
 const STORAGE_KEY = "ohne-dich-check:v1";
-const REPORT_UNLOCK_PREFIX = "ohne-dich-check:report:v1:";
+const REPORT_STORAGE_PREFIX = "ohne-dich-check:report:v2:";
 const REPORT_API_URL = "https://falkotreptau.com/api/ohne-dich-report";
 const answerKeys = ["1", "2", "3", "4"];
 
@@ -94,34 +94,61 @@ function saveProgress() {
   updateStartLabels();
 }
 
-function reportUnlockKey(code) {
-  return `${REPORT_UNLOCK_PREFIX}${code}`;
+function reportStorageKey(code) {
+  return `${REPORT_STORAGE_PREFIX}${code}`;
 }
 
-function isReportUnlocked(code) {
+function isDetailedReport(report) {
+  return Boolean(
+    report
+    && Number.isInteger(report.score)
+    && report.tier?.title
+    && report.tier?.description
+    && Array.isArray(report.areaResults)
+    && report.areaResults.length === 6
+    && report.areaResults.every((area) => area.id && area.name && Number.isInteger(area.score) && area.status && area.insight)
+    && report.bottleneck?.id
+    && report.bottleneck?.name
+    && report.bottleneck?.diagnosis
+    && report.bottleneck?.workflow?.title
+    && report.bottleneck?.workflow?.description
+    && Array.isArray(report.bottleneck?.actions)
+    && report.bottleneck.actions.length === 3
+    && report.secondBottleneck?.name
+  );
+}
+
+function loadStoredReport(code) {
   try {
-    return localStorage.getItem(reportUnlockKey(code)) === "1";
+    const report = JSON.parse(localStorage.getItem(reportStorageKey(code)));
+    if (isDetailedReport(report)) return report;
+    localStorage.removeItem(reportStorageKey(code));
   } catch {
-    return false;
+    // A malformed or unavailable cache must never unlock the report.
   }
+  return null;
 }
 
-function markReportUnlocked(code) {
+function storeDetailedReport(code, report) {
+  if (!isDetailedReport(report)) return false;
   try {
-    localStorage.setItem(reportUnlockKey(code), "1");
+    localStorage.setItem(reportStorageKey(code), JSON.stringify(report));
   } catch {
     // Delivery succeeded even when local persistence is unavailable.
   }
+  return true;
 }
 
-function renderReportAccess(unlocked, name = "") {
+function renderReportAccess(report, name = "") {
+  const unlocked = isDetailedReport(report);
   elements.reportForm.hidden = unlocked;
   elements.reportSuccess.hidden = !unlocked;
   elements.reportDetail.hidden = !unlocked;
   elements.reportSuccessTitle.textContent = name
     ? `${name}, dein Report ist unterwegs.`
     : "Dein Report ist freigeschaltet.";
-  if (!unlocked) {
+  if (unlocked) renderDetailedReport(report);
+  else {
     elements.reportStatus.textContent = "";
     elements.reportStatus.classList.remove("is-error");
   }
@@ -237,41 +264,25 @@ function buildResultUrl(code) {
   return url.toString();
 }
 
-function showResult() {
-  if (state.answers.some((answer) => answer === null)) {
-    startCheck();
-    return;
-  }
-
-  const result = calculateResult(state.answers);
-  const code = encodeResult(state.answers);
-  state.resultCode = code;
-  const resultUrl = buildResultUrl(code);
-  window.history.replaceState({ resultCode: code }, "", resultUrl);
-
-  elements.scoreValue.textContent = String(result.score);
-  elements.scoreLockup.setAttribute("aria-label", `Unabhängigkeits-Score ${result.score} von 100`);
-  elements.tierTitle.textContent = result.tier.title;
-  elements.tierDescription.textContent = result.tier.description;
-  elements.scoreBottleneckName.textContent = result.bottleneck.name;
-  elements.bottleneckName.textContent = result.bottleneck.name;
-  elements.bottleneckDiagnosis.textContent = result.bottleneck.area.diagnosis;
-  elements.secondBottleneckName.textContent = result.secondBottleneck.name;
-  elements.workflowTitle.textContent = result.bottleneck.area.workflow.title;
-  elements.workflowDescription.textContent = result.bottleneck.area.workflow.description;
+function renderDetailedReport(report) {
+  elements.bottleneckName.textContent = report.bottleneck.name;
+  elements.bottleneckDiagnosis.textContent = report.bottleneck.diagnosis;
+  elements.secondBottleneckName.textContent = report.secondBottleneck.name;
+  elements.workflowTitle.textContent = report.bottleneck.workflow.title;
+  elements.workflowDescription.textContent = report.bottleneck.workflow.description;
 
   elements.actionList.replaceChildren();
-  result.bottleneck.area.actions.forEach((action) => {
+  report.bottleneck.actions.forEach((action) => {
     const item = document.createElement("li");
     item.textContent = action;
     elements.actionList.append(item);
   });
 
   elements.areaScores.replaceChildren();
-  result.areaResults.forEach((area) => {
+  report.areaResults.forEach((area) => {
     const row = document.createElement("div");
     row.className = "area-score";
-    if (area.id === result.bottleneck.id) row.classList.add("is-bottleneck");
+    if (area.id === report.bottleneck.id) row.classList.add("is-bottleneck");
 
     const head = document.createElement("div");
     head.className = "area-score-head";
@@ -307,8 +318,26 @@ function showResult() {
     row.append(head, track, insight);
     elements.areaScores.append(row);
   });
+}
 
-  renderReportAccess(isReportUnlocked(code));
+function showResult() {
+  if (state.answers.some((answer) => answer === null)) {
+    startCheck();
+    return;
+  }
+
+  const result = calculateResult(state.answers);
+  const code = encodeResult(state.answers);
+  state.resultCode = code;
+  const resultUrl = buildResultUrl(code);
+  window.history.replaceState({ resultCode: code }, "", resultUrl);
+
+  elements.scoreValue.textContent = String(result.score);
+  elements.scoreLockup.setAttribute("aria-label", `Unabhängigkeits-Score ${result.score} von 100`);
+  elements.tierTitle.textContent = result.tier.title;
+  elements.tierDescription.textContent = result.tier.description;
+  elements.scoreBottleneckName.textContent = result.bottleneck.name;
+  renderReportAccess(loadStoredReport(code));
   setView("result");
   elements.tierTitle.focus({ preventScroll: true });
 }
@@ -359,12 +388,12 @@ async function requestDetailReport(event) {
       }),
     });
     const payload = await response.json().catch(() => ({}));
-    if (!response.ok || payload.delivery !== "sent") {
+    if (!response.ok || payload.delivery !== "sent" || !isDetailedReport(payload.report)) {
       throw Object.assign(new Error("report_delivery_failed"), { status: response.status });
     }
 
-    markReportUnlocked(state.resultCode);
-    renderReportAccess(true, name);
+    storeDetailedReport(state.resultCode, payload.report);
+    renderReportAccess(payload.report, name);
     elements.reportForm.reset();
     window.requestAnimationFrame(() => {
       const reportTop = elements.reportDetail.getBoundingClientRect().top + window.scrollY;

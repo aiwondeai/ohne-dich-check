@@ -17,8 +17,10 @@ test("the public quiz seam exposes six areas and twelve complete questions", () 
     assert.deepEqual(question.options.map((option) => option.score), [0, 1, 2, 3]);
   }
   for (const area of areas) {
-    assert.deepEqual(Object.keys(area.insights), ["critical", "developing", "stable"]);
-    assert.ok(Object.values(area.insights).every((insight) => insight.length > 80));
+    assert.equal("diagnosis" in area, false);
+    assert.equal("workflow" in area, false);
+    assert.equal("actions" in area, false);
+    assert.equal("insights" in area, false);
   }
 });
 
@@ -28,8 +30,7 @@ test("minimum answers produce zero and the founder-dependency tier", () => {
   assert.equal(result.score, 0);
   assert.equal(result.tier.title, "Du bist das Betriebssystem.");
   assert.ok(result.areaResults.every((area) => area.score === 0));
-  assert.ok(result.areaResults.every((area) => area.status === "Akut personenabhängig"));
-  assert.ok(result.areaResults.every((area) => area.insight.length > 80));
+  assert.ok(result.areaResults.every((area) => !("insight" in area)));
 });
 
 test("maximum answers produce one hundred and the autonomous tier", () => {
@@ -38,7 +39,6 @@ test("maximum answers produce one hundred and the autonomous tier", () => {
   assert.equal(result.score, 100);
   assert.equal(result.tier.title, "Dein Unternehmen arbeitet ohne Dauerzugriff auf dich.");
   assert.ok(result.areaResults.every((area) => area.score === 100));
-  assert.ok(result.areaResults.every((area) => area.status === "Tragfähig"));
 });
 
 test("worked middle example rounds to 67 percent", () => {
